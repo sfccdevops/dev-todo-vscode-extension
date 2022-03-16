@@ -1,0 +1,150 @@
+{
+  "name": "dev-todo-list",
+  "displayName": "Developer Todo List",
+  "version": "1.0.0",
+  "description": "VS Code Extension for Developer Todo Lists",
+  "license": "MIT",
+  "publisher": "RedVanWorkshop",
+  "categories": [
+    "Other"
+  ],
+  "main": "extension",
+  "icon": "extension/resources/icon.png",
+  "galleryBanner": {
+    "color": "#191919",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/redvanworkshop/dev-todo-vscode-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension/issues"
+  },
+  "engines": {
+    "vscode": "^1.60.0",
+    "node": "^14.19.0"
+  },
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "Peter Schmalfeldt",
+      "email": "peter@redvanworkshop.com",
+      "url": "https://redvanworkshop.com"
+    }
+  ],
+  "activationEvents": [
+    "onView:devTodoListGettingStartedView",
+    "onView:devTodoListView"
+  ],
+  "contributes": {
+    "configuration": {
+      "id": "devTodoList",
+      "title": "%extension.title%",
+      "properties": {
+        "extension.devTodoList.pattern": {
+          "order": 1,
+          "type": "string",
+          "default": "",
+          "description": "%config.properties.pattern.description%",
+          "scope": "window",
+          "pattern": "^$|^[a-zA-Z0-9_:-]+$",
+          "patternErrorMessage": "%config.properties.pattern.error%"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dev-todo-list",
+          "title": "%extension.title%",
+          "icon": "extension/resources/activity-bar.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "devTodoListGettingStartedView",
+        "contents": "%panel.welcome.message%",
+        "when": "!config.extension.devTodoList.pattern"
+      }
+    ],
+    "views": {
+      "dev-todo-list": [
+        {
+          "id": "devTodoListGettingStartedView",
+          "name": "%panel.welcome.title%",
+          "when": "!config.extension.devTodoList.pattern"
+        },
+        {
+          "id": "devTodoListView",
+          "name": "%panel.devToDoList.title%",
+          "when": "config.extension.devTodoList.pattern"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "extension.devTodoList.openSettings",
+          "group": "navigation@10",
+          "when": "view == devTodoListView"
+        },
+        {
+          "command": "extension.devTodoList.refresh",
+          "group": "navigation@10",
+          "when": "view == devTodoListView"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "extension.devTodoList.openSettings",
+        "title": "%command.openSettings.title%",
+        "category": "devTodoList",
+        "icon": {
+          "dark": "extension/resources/dark/settings.svg",
+          "light": "extension/resources/light/settings.svg"
+        }
+      },
+      {
+        "command": "extension.devTodoList.refresh",
+        "title": "%command.refreshToDoList.title%",
+        "category": "devTodoList",
+        "icon": {
+          "dark": "extension/resources/dark/refresh.svg",
+          "light": "extension/resources/light/refresh.svg"
+        }
+      },
+      {
+        "command": "extension.devTodoList.updated",
+        "title": "%command.toDoListUpdated.title%",
+        "category": "devTodoList"
+      }
+    ]
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint ./extension --fix",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "test": "npm run -s test:lint && npm run -s test:unit",
+    "test:unit": "echo 'No Unit Tests'",
+    "test:lint": "eslint --ext .js ./extension --fix && echo '\n【ツ】CODE PERFECTION !!!\n'"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "lint-staged": "^12.3.5",
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
+    "marked": "^4.0.12",
+    "vscode-nls-i18n": "^0.2.4"
+  }
+}

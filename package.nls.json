@@ -1,0 +1,14 @@
+{
+  "command.toDoListUpdated.title": "Dev Todo List Updated",
+  "command.openSettings.title": "Update Extension Settings",
+  "command.refreshToDoList.title": "Refresh Dev Todo List",
+  "config.properties.pattern.description": "RegEx Todo Search Pattern",
+  "config.properties.pattern.error": "Invalid RegEx Pattern Detected",
+  "debug.logger.missingWorkspace": "Workspace Folder Not Found. Open Folder or Workspace and try again.",
+  "debug.logger.pattern": "SEARCH PATTERN: {0}",
+  "debug.logger.workspace": "\nWORKSPACE: {0}",
+  "extension.title": "Developer Todo List",
+  "panel.devToDoList.title": "Dev Todo List",
+  "panel.welcome.message": "Before we get started, we need to configure some Settings for this Extension to work.\n[Open Settings](command:extension.devTodoList.openSettings)\nNeed more information? [Get Help](https://github.com/redvanworkshop/dev-todo-vscode-extension#readme).",
+  "panel.welcome.title": "Getting Started"
+}

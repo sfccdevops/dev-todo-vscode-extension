@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+    "window.title": "VS Code Extension${separator}Developer Todo List${separator}${activeEditorShort}",
+		"cSpell.words": []
+	}
+}
