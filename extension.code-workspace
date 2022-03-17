@@ -5,7 +5,34 @@
 		}
 	],
 	"settings": {
-    "window.title": "VS Code Extension${separator}Developer Todo List${separator}${activeEditorShort}",
-		"cSpell.words": []
+		"window.title": "VS Code Extension${separator}Developer Todo List${separator}${activeEditorShort}",
+		"cSpell.words": [
+			"appimage",
+			"baml",
+			"btif",
+			"cpio",
+			"djvu",
+			"dotm",
+			"dtshd",
+			"ecelp",
+			"epub",
+			"flac",
+			"graffle",
+			"icns",
+			"jpgv",
+			"lzma",
+			"mobi",
+			"mpga",
+			"nupkg",
+			"rmvb",
+			"scpt",
+			"shar",
+			"thmx",
+			"wbmp",
+			"weba",
+			"xlsb",
+			"xmind",
+			"zipx"
+		]
 	}
 }

@@ -44,7 +44,7 @@ function activate(context) {
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((evt) => {
       // Check if Pattern was Changed
-      const patternChanged = evt.affectsConfiguration('extension.devTodoList.pattern')
+      const patternChanged = evt.affectsConfiguration('extension.devTodoList.keywords')
 
       // Check if we should update Cartridge List
       if (patternChanged) {

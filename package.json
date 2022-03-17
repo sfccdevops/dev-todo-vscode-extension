@@ -43,14 +43,55 @@
       "id": "devTodoList",
       "title": "%extension.title%",
       "properties": {
-        "extension.devTodoList.pattern": {
+        "extension.devTodoList.keywords": {
           "order": 1,
-          "type": "string",
-          "default": "",
-          "description": "%config.properties.pattern.description%",
+          "description": "%config.properties.keywords.description%",
           "scope": "window",
-          "pattern": "^$|^[a-zA-Z0-9_:-]+$",
-          "patternErrorMessage": "%config.properties.pattern.error%"
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z_:-]+$",
+            "patternErrorMessage": "%config.properties.keywords.error%"
+          },
+          "default": [
+            "BUG",
+            "DEBUG",
+            "FIX",
+            "FIXME",
+            "HACK",
+            "IDEA",
+            "NOTE",
+            "OPTIMIZE",
+            "REVIEW",
+            "TODO",
+            "UGLY"
+          ]
+        },
+        "extension.devTodoList.exclude": {
+          "order": 2,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z_.*/-]+$",
+            "patternErrorMessage": "%config.properties.exclude.error%"
+          },
+          "description": "%config.properties.exclude.description%",
+          "default": [
+            "**/*.{log,map,svg}",
+            "**/*.min.*",
+            "**/bower_components/**",
+            "**/build/**",
+            "**/dist/**",
+            "**/node_modules/**",
+            "**/out/**",
+            "**/output/**",
+            "**/release/**",
+            "**/releases/**",
+            "**/static/**",
+            "**/target/**",
+            "**/third_party/**",
+            "**/vendor/**"
+          ]
         }
       }
     },
@@ -67,7 +108,7 @@
       {
         "view": "devTodoListGettingStartedView",
         "contents": "%panel.welcome.message%",
-        "when": "!config.extension.devTodoList.pattern"
+        "when": "!config.extension.devTodoList.keywords"
       }
     ],
     "views": {
@@ -75,12 +116,12 @@
         {
           "id": "devTodoListGettingStartedView",
           "name": "%panel.welcome.title%",
-          "when": "!config.extension.devTodoList.pattern"
+          "when": "!config.extension.devTodoList.keywords"
         },
         {
           "id": "devTodoListView",
           "name": "%panel.devToDoList.title%",
-          "when": "config.extension.devTodoList.pattern"
+          "when": "config.extension.devTodoList.keywords"
         }
       ]
     },
@@ -144,6 +185,7 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
+    "fast-glob": "^3.2.11",
     "marked": "^4.0.12",
     "vscode-nls-i18n": "^0.2.4"
   }

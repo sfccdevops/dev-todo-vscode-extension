@@ -20,6 +20,8 @@ class DevTodoListProvider {
     // Create Custom Event Listener
     this._onDidChangeTreeData = new vscode.EventEmitter()
     this.onDidChangeTreeData = this._onDidChangeTreeData.event
+
+    // TODO: We should probably give a developer a way to ignore comments contextually
   }
 
   /**
