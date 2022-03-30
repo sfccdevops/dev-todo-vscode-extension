@@ -8,18 +8,18 @@
  * @returns {Cache} The cache object
  */
 const Cache = function (context, namespace) {
-  if (!context) {
-    return undefined
-  }
+    if (!context) {
+        return undefined
+    }
 
-  // ExtensionContext
-  this.context = context
+    // ExtensionContext
+    this.context = context
 
-  // Namespace of the context's globalState
-  this.namespace = namespace || 'cache'
+    // Namespace of the context's globalState
+    this.namespace = namespace || 'cache'
 
-  // Local cache object
-  this.cache = this.context.globalState.get(this.namespace, {})
+    // Local cache object
+    this.cache = this.context.globalState.get(this.namespace, {})
 }
 
 /**
@@ -32,27 +32,27 @@ const Cache = function (context, namespace) {
  * @returns {Promise} Visual Studio Code Thenable (Promise)
  */
 Cache.prototype.set = function (key, value, expiration) {
-  // Parameter type checking
-  if (typeof key !== 'string' || typeof value === 'undefined') {
-    return new Promise((resolve) => {
-      resolve(false)
-    })
-  }
+    // Parameter type checking
+    if (typeof key !== 'string' || typeof value === 'undefined') {
+        return new Promise((resolve) => {
+            resolve(false)
+        })
+    }
 
-  let obj = {
-    value: value,
-  }
+    let obj = {
+        value: value,
+    }
 
-  // Set expiration
-  if (Number.isInteger(expiration)) {
-    obj.expiration = now() + expiration
-  }
+    // Set expiration
+    if (Number.isInteger(expiration)) {
+        obj.expiration = now() + expiration
+    }
 
-  // Save to local cache object
-  this.cache[key] = obj
+    // Save to local cache object
+    this.cache[key] = obj
 
-  // Save to extension's globalState
-  return this.context.globalState.update(this.namespace, this.cache)
+    // Save to extension's globalState
+    return this.context.globalState.update(this.namespace, this.cache)
 }
 
 /**
@@ -64,22 +64,22 @@ Cache.prototype.set = function (key, value, expiration) {
  * @returns {any} Returns the cached value or optional defaultValue
  */
 Cache.prototype.get = function (key, defaultValue) {
-  // If doesn't exist
-  if (typeof this.cache[key] === 'undefined') {
-    // Return default value
-    if (typeof defaultValue !== 'undefined') {
-      return defaultValue
+    // If doesn't exist
+    if (typeof this.cache[key] === 'undefined') {
+        // Return default value
+        if (typeof defaultValue !== 'undefined') {
+            return defaultValue
+        } else {
+            return undefined
+        }
     } else {
-      return undefined
+        // Is item expired?
+        if (this.isExpired(key)) {
+            return undefined
+        }
+        // Otherwise return the value
+        return this.cache[key].value
     }
-  } else {
-    // Is item expired?
-    if (this.isExpired(key)) {
-      return undefined
-    }
-    // Otherwise return the value
-    return this.cache[key].value
-  }
 }
 
 /**
@@ -90,11 +90,11 @@ Cache.prototype.get = function (key, defaultValue) {
  * @return {boolean}
  */
 Cache.prototype.has = function (key) {
-  if (typeof this.cache[key] === 'undefined') {
-    return false
-  } else {
-    return this.isExpired(key) ? false : true
-  }
+    if (typeof this.cache[key] === 'undefined') {
+        return false
+    } else {
+        return this.isExpired(key) ? false : true
+    }
 }
 
 /**
@@ -105,18 +105,18 @@ Cache.prototype.has = function (key) {
  * @returns {Thenable} Visual Studio Code Thenable (Promise)
  */
 Cache.prototype.remove = function (key) {
-  // Does item exist?
-  if (typeof this.cache[key] === 'undefined') {
-    return new Promise((resolve) => {
-      resolve(true)
-    })
-  }
+    // Does item exist?
+    if (typeof this.cache[key] === 'undefined') {
+        return new Promise((resolve) => {
+            resolve(true)
+        })
+    }
 
-  // Delete from local object
-  delete this.cache[key]
+    // Delete from local object
+    delete this.cache[key]
 
-  // Update the extension's globalState
-  return this.context.globalState.update(this.namespace, this.cache)
+    // Update the extension's globalState
+    return this.context.globalState.update(this.namespace, this.cache)
 }
 
 /**
@@ -126,7 +126,7 @@ Cache.prototype.remove = function (key) {
  * @return {string[]}
  */
 Cache.prototype.keys = function () {
-  return Object.keys(this.cache)
+    return Object.keys(this.cache)
 }
 
 /**
@@ -136,11 +136,11 @@ Cache.prototype.keys = function () {
  * @return {object}
  */
 Cache.prototype.all = function () {
-  let items = {}
-  for (let key in this.cache) {
-    items[key] = this.cache[key].value
-  }
-  return items
+    let items = {}
+    for (let key in this.cache) {
+        items[key] = this.cache[key].value
+    }
+    return items
 }
 
 /**
@@ -150,8 +150,8 @@ Cache.prototype.all = function () {
  * @returns {Thenable} Visual Studio Code Thenable (Promise)
  */
 Cache.prototype.flush = function () {
-  this.cache = {}
-  return this.context.globalState.update(this.namespace, undefined)
+    this.cache = {}
+    return this.context.globalState.update(this.namespace, undefined)
 }
 
 /**
@@ -162,11 +162,11 @@ Cache.prototype.flush = function () {
  * @return {number} Unix Timestamp in seconds
  */
 Cache.prototype.getExpiration = function (key) {
-  if (typeof this.cache[key] === 'undefined' || typeof this.cache[key].expiration === 'undefined') {
-    return undefined
-  } else {
-    return this.cache[key].expiration
-  }
+    if (typeof this.cache[key] === 'undefined' || typeof this.cache[key].expiration === 'undefined') {
+        return undefined
+    } else {
+        return this.cache[key].expiration
+    }
 }
 
 /**
@@ -177,13 +177,13 @@ Cache.prototype.getExpiration = function (key) {
  * @return {boolean}
  */
 Cache.prototype.isExpired = function (key) {
-  // If key doesn't exist or it has no expiration
-  if (typeof this.cache[key] === 'undefined' || typeof this.cache[key].expiration === 'undefined') {
-    return false
-  } else {
-    // Is expiration >= right now?
-    return now() >= this.cache[key].expiration
-  }
+    // If key doesn't exist or it has no expiration
+    if (typeof this.cache[key] === 'undefined' || typeof this.cache[key].expiration === 'undefined') {
+        return false
+    } else {
+        // Is expiration >= right now?
+        return now() >= this.cache[key].expiration
+    }
 }
 
 /**
@@ -194,7 +194,7 @@ Cache.prototype.isExpired = function (key) {
  * @return {number} Current Unix Timestamp in seconds
  */
 const now = function () {
-  return Math.floor(Date.now() / 1000)
+    return Math.floor(Date.now() / 1000)
 }
 
 module.exports = Cache

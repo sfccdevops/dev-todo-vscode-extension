@@ -1,192 +1,197 @@
 {
-  "name": "dev-todo-list",
-  "displayName": "Developer Todo List",
-  "version": "1.0.0",
-  "description": "VS Code Extension for Developer Todo Lists",
-  "license": "MIT",
-  "publisher": "RedVanWorkshop",
-  "categories": [
-    "Other"
-  ],
-  "main": "extension",
-  "icon": "extension/resources/icon.png",
-  "galleryBanner": {
-    "color": "#191919",
-    "theme": "dark"
-  },
-  "homepage": "https://github.com/redvanworkshop/dev-todo-vscode-extension#readme",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension.git"
-  },
-  "bugs": {
-    "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension/issues"
-  },
-  "engines": {
-    "vscode": "^1.60.0",
-    "node": "^14.19.0"
-  },
-  "keywords": [],
-  "contributors": [
-    {
-      "name": "Peter Schmalfeldt",
-      "email": "peter@redvanworkshop.com",
-      "url": "https://redvanworkshop.com"
-    }
-  ],
-  "activationEvents": [
-    "onView:devTodoListGettingStartedView",
-    "onView:devTodoListView"
-  ],
-  "contributes": {
-    "configuration": {
-      "id": "devTodoList",
-      "title": "%extension.title%",
-      "properties": {
-        "extension.devTodoList.keywords": {
-          "order": 1,
-          "description": "%config.properties.keywords.description%",
-          "scope": "window",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^[A-Z_:-]+$",
-            "patternErrorMessage": "%config.properties.keywords.error%"
-          },
-          "default": [
-            "BUG",
-            "DEBUG",
-            "FIX",
-            "FIXME",
-            "HACK",
-            "IDEA",
-            "NOTE",
-            "OPTIMIZE",
-            "REVIEW",
-            "TODO",
-            "UGLY"
-          ]
-        },
-        "extension.devTodoList.exclude": {
-          "order": 2,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-zA-Z_.*/-]+$",
-            "patternErrorMessage": "%config.properties.exclude.error%"
-          },
-          "description": "%config.properties.exclude.description%",
-          "default": [
-            "**/*.{log,map,svg}",
-            "**/*.min.*",
-            "**/bower_components/**",
-            "**/build/**",
-            "**/dist/**",
-            "**/node_modules/**",
-            "**/out/**",
-            "**/output/**",
-            "**/release/**",
-            "**/releases/**",
-            "**/static/**",
-            "**/target/**",
-            "**/third_party/**",
-            "**/vendor/**"
-          ]
-        }
-      }
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "dev-todo-list",
-          "title": "%extension.title%",
-          "icon": "extension/resources/activity-bar.svg"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "devTodoListGettingStartedView",
-        "contents": "%panel.welcome.message%",
-        "when": "!config.extension.devTodoList.keywords"
-      }
+    "name": "dev-todo-list",
+    "displayName": "Developer Todo List",
+    "version": "1.0.0",
+    "description": "VS Code Extension for Developer Todo Lists",
+    "license": "MIT",
+    "publisher": "RedVanWorkshop",
+    "categories": [
+        "Other"
     ],
-    "views": {
-      "dev-todo-list": [
-        {
-          "id": "devTodoListGettingStartedView",
-          "name": "%panel.welcome.title%",
-          "when": "!config.extension.devTodoList.keywords"
-        },
-        {
-          "id": "devTodoListView",
-          "name": "%panel.devToDoList.title%",
-          "when": "config.extension.devTodoList.keywords"
-        }
-      ]
+    "main": "extension",
+    "icon": "extension/resources/icon.png",
+    "galleryBanner": {
+        "color": "#191919",
+        "theme": "dark"
     },
-    "menus": {
-      "view/title": [
-        {
-          "command": "extension.devTodoList.openSettings",
-          "group": "navigation@10",
-          "when": "view == devTodoListView"
-        },
-        {
-          "command": "extension.devTodoList.refresh",
-          "group": "navigation@10",
-          "when": "view == devTodoListView"
-        }
-      ]
+    "homepage": "https://github.com/redvanworkshop/dev-todo-vscode-extension#readme",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension.git"
     },
-    "commands": [
-      {
-        "command": "extension.devTodoList.openSettings",
-        "title": "%command.openSettings.title%",
-        "category": "devTodoList",
-        "icon": {
-          "dark": "extension/resources/dark/settings.svg",
-          "light": "extension/resources/light/settings.svg"
+    "bugs": {
+        "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension/issues"
+    },
+    "engines": {
+        "vscode": "^1.60.0",
+        "node": "^14.19.0"
+    },
+    "keywords": [],
+    "contributors": [
+        {
+            "name": "Peter Schmalfeldt",
+            "email": "peter@redvanworkshop.com",
+            "url": "https://redvanworkshop.com"
         }
-      },
-      {
-        "command": "extension.devTodoList.refresh",
-        "title": "%command.refreshToDoList.title%",
-        "category": "devTodoList",
-        "icon": {
-          "dark": "extension/resources/dark/refresh.svg",
-          "light": "extension/resources/light/refresh.svg"
-        }
-      },
-      {
-        "command": "extension.devTodoList.updated",
-        "title": "%command.toDoListUpdated.title%",
-        "category": "devTodoList"
-      }
-    ]
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint ./extension --fix",
-      "git add"
-    ]
-  },
-  "scripts": {
-    "test": "npm run -s test:lint && npm run -s test:unit",
-    "test:unit": "echo 'No Unit Tests'",
-    "test:lint": "eslint --ext .js ./extension --fix && echo '\n【ツ】CODE PERFECTION !!!\n'"
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^8.11.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "lint-staged": "^12.3.5",
-    "prettier": "^2.5.1"
-  },
-  "dependencies": {
-    "fast-glob": "^3.2.11",
-    "marked": "^4.0.12",
-    "vscode-nls-i18n": "^0.2.4"
-  }
+    ],
+    "activationEvents": [
+        "onView:devTodoListGettingStartedView",
+        "onView:devTodoListView"
+    ],
+    "contributes": {
+        "configuration": {
+            "id": "devTodoList",
+            "title": "%extension.title%",
+            "properties": {
+                "extension.devTodoList.keywords": {
+                    "order": 1,
+                    "description": "%config.properties.keywords.description%",
+                    "scope": "window",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z_:-]+$",
+                        "patternErrorMessage": "%config.properties.keywords.error%"
+                    },
+                    "default": [
+                        "BUG",
+                        "DEBUG",
+                        "FIX",
+                        "FIXME",
+                        "HACK",
+                        "IDEA",
+                        "NOTE",
+                        "OPTIMIZE",
+                        "REVIEW",
+                        "TODO",
+                        "UGLY"
+                    ]
+                },
+                "extension.devTodoList.exclude": {
+                    "order": 2,
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z_.*/-]+$",
+                        "patternErrorMessage": "%config.properties.exclude.error%"
+                    },
+                    "description": "%config.properties.exclude.description%",
+                    "default": [
+                        "**/*.{log,map,svg}",
+                        "**/*.min.*",
+                        "**/bower_components/**",
+                        "**/build/**",
+                        "**/dist/**",
+                        "**/node_modules/**",
+                        "**/out/**",
+                        "**/output/**",
+                        "**/release/**",
+                        "**/releases/**",
+                        "**/static/**",
+                        "**/target/**",
+                        "**/third_party/**",
+                        "**/vendor/**"
+                    ]
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "dev-todo-list",
+                    "title": "%extension.title%",
+                    "icon": "extension/resources/activity-bar.svg"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "view": "devTodoListGettingStartedView",
+                "contents": "%panel.welcome.message%",
+                "when": "!config.extension.devTodoList.keywords"
+            }
+        ],
+        "views": {
+            "dev-todo-list": [
+                {
+                    "id": "devTodoListGettingStartedView",
+                    "name": "%panel.welcome.title%",
+                    "when": "!config.extension.devTodoList.keywords"
+                },
+                {
+                    "id": "devTodoListView",
+                    "name": "%panel.devToDoList.title%",
+                    "when": "config.extension.devTodoList.keywords"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "extension.devTodoList.openSettings",
+                    "group": "navigation@10",
+                    "when": "view == devTodoListView"
+                },
+                {
+                    "command": "extension.devTodoList.refresh",
+                    "group": "navigation@10",
+                    "when": "view == devTodoListView"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "extension.devTodoList.openSettings",
+                "title": "%command.openSettings.title%",
+                "category": "devTodoList",
+                "icon": {
+                    "dark": "extension/resources/dark/settings.svg",
+                    "light": "extension/resources/light/settings.svg"
+                }
+            },
+            {
+                "command": "extension.devTodoList.refresh",
+                "title": "%command.refreshToDoList.title%",
+                "category": "devTodoList",
+                "icon": {
+                    "dark": "extension/resources/dark/refresh.svg",
+                    "light": "extension/resources/light/refresh.svg"
+                }
+            },
+            {
+                "command": "extension.devTodoList.updated",
+                "title": "%command.toDoListUpdated.title%",
+                "category": "devTodoList"
+            }
+        ]
+    },
+    "lint-staged": {
+        "**/*": "prettier --write --ignore-unknown",
+        "*.js": [
+            "eslint ./extension --fix",
+            "git add"
+        ]
+    },
+    "scripts": {
+        "test": "npm run -s test:lint && npm run -s test:unit",
+        "test:unit": "echo 'No Unit Tests'",
+        "test:lint": "eslint --ext .js ./extension --fix && echo '\n【ツ】CODE PERFECTION !!!\n'"
+    },
+    "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^8.11.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "husky": "^7.0.4",
+        "lint-staged": "^12.3.7",
+        "prettier": "^2.6.0"
+    },
+    "dependencies": {
+        "fast-glob": "^3.2.11",
+        "marked": "^4.0.12",
+        "vscode-nls-i18n": "^0.2.4"
+    },
+    "standard": {
+        "parser": "babel-eslint"
+    }
 }
