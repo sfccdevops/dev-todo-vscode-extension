@@ -15,6 +15,6 @@
   "dialog.info.refreshComplete": "Updated Todo List",
   "extension.title": "Developer Todo List",
   "panel.devToDoList.title": "Developer Todo List",
-  "panel.welcome.message": "Before we get started, we need to configure some Settings for this Extension to work.\n[Open Settings](command:extension.devTodoList.openSettings)\nNeed more information? [Get Help](https://github.com/redvanworkshop/dev-todo-vscode-extension#readme).",
+  "panel.welcome.message": "Before we get started, we need to configure some Settings for this Extension to work.\n[Open Settings](command:extension.devTodoList.openSettings)\nNeed more information? [Get Help](https://github.com/sfccdevops/dev-todo-vscode-extension#readme).",
   "panel.welcome.title": "Getting Started"
 }

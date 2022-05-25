@@ -14,7 +14,7 @@ const WelcomePane = require('./welcome')
 function activate(context) {
     // Get Extension Version Info
     const currentVersion = context.globalState.get('dev-todo-vscode-extension.version')
-    const packageVersion = vscode.extensions.getExtension('RedVanWorkshop.dev-todo-list').packageJSON.version
+    const packageVersion = vscode.extensions.getExtension('SFCCDevOps.dev-todo-list').packageJSON.version
 
     // Check if there was a recent change to installed version
     if (currentVersion !== packageVersion) {

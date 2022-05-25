@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "VS Code Extension for Developer Todo Lists",
     "license": "MIT",
-    "publisher": "RedVanWorkshop",
+    "publisher": "SFCCDevOps",
     "categories": [
         "Other"
     ],
@@ -14,13 +14,13 @@
         "color": "#191919",
         "theme": "dark"
     },
-    "homepage": "https://github.com/redvanworkshop/dev-todo-vscode-extension#readme",
+    "homepage": "https://github.com/sfccdevops/dev-todo-vscode-extension#readme",
     "repository": {
         "type": "git",
-        "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension.git"
+        "url": "https://github.com/sfccdevops/dev-todo-vscode-extension.git"
     },
     "bugs": {
-        "url": "https://github.com/redvanworkshop/dev-todo-vscode-extension/issues"
+        "url": "https://github.com/sfccdevops/dev-todo-vscode-extension/issues"
     },
     "engines": {
         "vscode": "^1.60.0",
@@ -30,8 +30,8 @@
     "contributors": [
         {
             "name": "Peter Schmalfeldt",
-            "email": "peter@redvanworkshop.com",
-            "url": "https://redvanworkshop.com"
+            "email": "me@peterschmalfeldt.com",
+            "url": "https://peterschmalfeldt.com"
         }
     ],
     "activationEvents": [
