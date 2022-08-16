@@ -47,13 +47,41 @@ class DevTodoList {
      * @returns Object
      */
     generateTree(list) {
-        // Collect Tree Data
-        const treeData = []
+        return new Promise((resolve) => {
+            console.log(list)
+            // Collect Tree Data
+            const treeData = []
 
-        // TODO: Do something with `list`
-        console.log(list)
+            // Extract Data
+            const { gitUserName, toDos } = list
+            const labels = toDos ? Object.keys(toDos) : []
 
-        return treeData
+            // Sort Keys
+            labels.sort()
+
+            // Process List
+            labels.forEach((name) => {
+                const total = toDos[name].total
+                const tooltip = total === 1 ? localize('panel.devToDoList.located.singular', total, name) : localize('panel.devToDoList.located.plural', total, name)
+
+                // TODO: Create File Tree for Children
+                // TODO: Check `gitUserName` against file `author`
+
+                // Push Item to Tree View
+                treeData.push({
+                    name,
+                    contextValue: 'folder',
+                    children: [], // cartridges[name].tree,
+                    tooltip: tooltip,
+                    description: `( ${total} )`,
+                    command: null,
+                })
+            })
+
+            console.log(treeData)
+
+            return resolve(treeData)
+        })
     }
 
     /**
@@ -158,9 +186,10 @@ class DevTodoList {
                 // TODO: When file changed, only re-index that single file and update the cache with the results ( vs re-indexing everything )
                 const searchResults = Promise.resolve(util.findTodoComments(fileList, this.keywords.join('|'), this.workspacePath))
 
-                this.cachedDevTodoList.set('searchResults', searchResults)
-
-                return resolve(searchResults)
+                searchResults.then((data) => {
+                    this.cachedDevTodoList.set('searchResults', data)
+                    return resolve(data)
+                })
             }
         })
     }
@@ -170,7 +199,9 @@ class DevTodoList {
      */
     refresh(useCache) {
         // Send Notification that Process is Staring
-        vscode.window.showInformationMessage(localize('dialog.info.refreshStarted'))
+        if (!useCache) {
+            vscode.window.showInformationMessage(localize('dialog.info.refreshStarted'))
+        }
 
         // Show Loading Indicator Until Loaded
         vscode.window.withProgress(
@@ -178,26 +209,39 @@ class DevTodoList {
                 location: { viewId: 'devTodoListView' },
             },
             () =>
-                new Promise((resolve) => {
+                new Promise((resolve, reject) => {
                     if (!useCache) {
                         // Clear Cache
                         this.cachedDevTodoList.flush()
+
+                        // Get VS Code Configuration
+                        this.configuration = vscode.workspace.getConfiguration()
                     }
 
                     // Fetch Files from Workspace
-                    this.getDevTodoList().then((list) => {
-                        // Update Tree View Data
-                        this.treeViewData = this.generateTree(list)
+                    this.getDevTodoList()
+                        .then((list) => {
+                            // Update Tree View Data
+                            this.generateTree(list).then((data) => {
+                                // Update Tree Data
+                                this.treeViewData = data
 
-                        // Let VS Code know we have updated data
-                        vscode.commands.executeCommand('extension.devTodoList.updated', this.treeViewData)
+                                // Send Notification that Process is Complete
+                                if (!useCache) {
+                                    vscode.window.showInformationMessage(localize('dialog.info.refreshComplete'))
+                                }
 
-                        // Send Notification that Process is Complete
-                        vscode.window.showInformationMessage(localize('dialog.info.refreshComplete'))
+                                // Let VS Code know we have updated data
+                                vscode.commands.executeCommand('extension.devTodoList.updated', this.treeViewData)
 
-                        // Stop Loading Indicator
-                        resolve()
-                    })
+                                // Stop Loading Indicator
+                                resolve()
+                            })
+                        })
+                        .catch((err) => {
+                            util.logger(localize('debug.logger.error', 'DevTodoList.refresh:getDevTodoList', err.toString()), 'error')
+                            reject(err)
+                        })
                 })
         )
     }

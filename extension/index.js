@@ -5,6 +5,7 @@ const vscode = require('vscode')
 const DevTodoList = require('./DevTodoList')
 const DevTodoListProvider = require('./DevTodoListProvider')
 
+const util = require('./util')
 const WelcomePane = require('./welcome')
 
 /**
@@ -14,7 +15,7 @@ const WelcomePane = require('./welcome')
 function activate(context) {
     // Get Extension Version Info
     const currentVersion = context.globalState.get('dev-todo-vscode-extension.version')
-    const packageVersion = vscode.extensions.getExtension('SFCCDevOps.dev-todo-list').packageJSON.version
+    const packageVersion = vscode.extensions.getExtension('PeterSchmalfeldt.dev-todo-list').packageJSON.version
 
     // Check if there was a recent change to installed version
     if (currentVersion !== packageVersion) {
@@ -40,7 +41,13 @@ function activate(context) {
 
     // Register Commands
     const devTodoListUpdated = vscode.commands.registerCommand('extension.devTodoList.updated', (treeData) => devTodoListProvider.refresh(treeData))
-    const openSettings = vscode.commands.registerCommand('extension.devTodoList.openSettings', () => vscode.commands.executeCommand('workbench.action.openSettings', 'extension.devTodoList'))
+    const openSettings = vscode.commands.registerCommand('extension.devTodoList.openSettings', () => {
+        util.logger('Opening Explorer Exclude Settings', 'debug')
+        vscode.commands.executeCommand('workbench.action.openSettings', 'devTodoList')
+        setTimeout(function () {
+            vscode.commands.executeCommand('workbench.action.openWorkspaceSettings')
+        }, 1000)
+    })
     const refreshDevTodoList = vscode.commands.registerCommand('extension.devTodoList.refresh', () => devTodoList.refresh(false))
 
     // Listen for Config Change of Overrides and Regenerate Tree when Changed

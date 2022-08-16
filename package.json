@@ -4,11 +4,11 @@
     "version": "1.0.0",
     "description": "VS Code Extension for Developer Todo Lists",
     "license": "MIT",
-    "publisher": "SFCCDevOps",
+    "publisher": "PeterSchmalfeldt",
     "categories": [
         "Other"
     ],
-    "main": "extension",
+    "main": "extension/index.js",
     "icon": "extension/resources/icon.png",
     "galleryBanner": {
         "color": "#191919",
@@ -72,7 +72,7 @@
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "pattern": "^[a-zA-Z_.*/-]+$",
+                        "pattern": "^[a-zA-Z_.,{}*/-]+$",
                         "patternErrorMessage": "%config.properties.exclude.error%"
                     },
                     "description": "%config.properties.exclude.description%",

@@ -73,7 +73,10 @@ const _searchList = async (fileList, results, keywords, workspacePath) => {
                 }
 
                 // Loop through results for keyword matches
-                comments.forEach((line) => {
+                comments.forEach(async (obj) => {
+                    // Get Data from Comment Object
+                    const { line, lineNo } = obj
+
                     // Prep the line and check if this is a todo comment
                     const clean = line.trim()
                     const match = [...clean.matchAll(regex)] || []
@@ -97,17 +100,20 @@ const _searchList = async (fileList, results, keywords, workspacePath) => {
                             }
 
                             // Start File List if New
-                            const filePath = file.replace(workspacePath, '')
+                            const filePath = path.relative(workspacePath, file)
 
                             if (results && keyword && results[keyword] && results[keyword]['files'] && !Object.prototype.hasOwnProperty.call(results[keyword]['files'], filePath)) {
                                 results[keyword]['files'][filePath] = []
                             }
 
-                            // TODO: Fetch Line Number and Git Author data using line below
-                            // const author = await _fetchGitInfo(`git blame --line-porcelain -L ${lineNo},+1 ${filePath} --porcelain | sed -n "s/^author //p"`, workspacePath)
+                            // Fetch Line Number and Git Author data using line below
+                            let author = await _fetchGitInfo(`git blame --line-porcelain -L ${lineNo},+1 ${filePath} --porcelain | sed -n "s/^author //p"`, workspacePath)
+                            author = author.trim()
 
                             results[keyword]['files'][filePath].push({
-                                message: message,
+                                author,
+                                lineNo,
+                                message,
                             })
                         } else {
                             return
@@ -211,6 +217,12 @@ const getWorkspace = (context) => {
                     const relative = path.relative(wsFolder.uri.fsPath, vscode.window.activeTextEditor.document.uri.path)
                     return relative && !relative.startsWith('..') && !path.isAbsolute(relative)
                 })
+
+                // The file that is active does not belong to any of the workspace folders, so let's use the first workspace
+                if (!root) {
+                    root = vscode.workspace.workspaceFolders[0]
+                }
+
                 workspace = root && root.uri ? root.uri.fsPath : null
             } else {
                 // No file was open, so just grab the first available workspace

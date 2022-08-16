@@ -256,6 +256,7 @@ class CodeComment {
         }
 
         const { LINE_REGEX, BLOCK_OPEN_REGEX, BLOCK_CLOSE_REGEX } = lang
+
         let block = commentBlocks
         let remaining = input
         let token
@@ -376,6 +377,34 @@ class CodeComment {
             return comment.replace(/^[^0-9a-zA-Z:,@]+/, '').trim()
         }
 
+        // TODO: Don't loop through the same file more than once
+        const getLineNumber = (text, isBlock) => {
+            let lineNum = 0
+            let matches = 0
+            let comment = isBlock ? text.split(/\r?\n/) : [text]
+
+            // Break apart file line by line
+            input.split(/\r?\n/).every((line) => {
+                if (matches === 0) {
+                    lineNum += 1
+                }
+
+                if (line.includes(comment[matches])) {
+                    matches += 1
+
+                    if (matches === comment.length) {
+                        return false
+                    }
+                } else {
+                    matches = 0
+                }
+
+                return true
+            })
+
+            return lineNum
+        }
+
         const filter = (comments) => {
             const clean = []
             comments.forEach((comment) => {
@@ -383,7 +412,10 @@ class CodeComment {
                     const lineComment = cleanComment(comment.value)
 
                     if (lineComment && lineComment.length > 0) {
-                        clean.push(lineComment)
+                        clean.push({
+                            line: lineComment,
+                            lineNo: getLineNumber(lineComment),
+                        })
                     }
                 }
 
@@ -393,7 +425,10 @@ class CodeComment {
                             const blockComment = cleanComment(block.value)
 
                             if (blockComment && blockComment.length > 0) {
-                                clean.push(blockComment)
+                                clean.push({
+                                    line: blockComment,
+                                    lineNo: getLineNumber(blockComment, true),
+                                })
                             }
                         }
                     })
